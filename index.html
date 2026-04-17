@@ -155,7 +155,7 @@
 
         .carousel-card {
             position: absolute; top: 50%; left: 0; width: 100%;
-            transform: translateY(-50%) scale(0.95);
+            transform: translateY(-150%) scale(0.85); /* 預設：在上方且略小 */
             opacity: 0;
             background: rgba(255, 255, 255, 0.95); color: var(--text-main);
             border-left: 10px solid var(--ca-yellow);
@@ -164,10 +164,17 @@
             transition: opacity 1s ease, transform 1s ease;
             box-sizing: border-box;
             pointer-events: none;
+            z-index: 1;
         }
         
         .carousel-card.active {
             opacity: 1; transform: translateY(-50%) scale(1); pointer-events: auto;
+            z-index: 2;
+        }
+
+        .carousel-card.exit {
+            opacity: 0; transform: translateY(50%) scale(0.85); /* 退場：往下方滑落 */
+            z-index: 1;
         }
         
         .carousel-card .target { color: var(--ca-blue); font-size: 1.6rem; font-weight: bold; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
@@ -416,7 +423,7 @@
         import { getFirestore, collection, addDoc, onSnapshot, doc, getDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // ================= 1. 系統與 Firebase 初始化 =================
-      const firebaseConfig = {
+       const firebaseConfig = {
   apiKey: "AIzaSyCnHAgkXvben7eh2OMGtq13biiZa24EC7s",
   authDomain: "gradeuate-deadc.firebaseapp.com",
   projectId: "gradeuate-deadc",
@@ -582,17 +589,34 @@
             if(messagesData.length === 0) return;
 
             // 如果原本的 activeCardIndex 已經超出範圍，歸零
-            if(activeCardIndex >= messagesData.length) activeCardIndex = 0;
+        if(activeCardIndex >= messagesData.length) activeCardIndex = 0;
+        
+        const updateCards = () => {
+            document.querySelectorAll('.carousel-card').forEach(el => {
+                if (el.classList.contains('active')) {
+                    el.classList.remove('active');
+                    el.classList.add('exit'); // 舊卡片往下方退場
+                } else if (el.id !== `card-${activeCardIndex}`) {
+                    el.classList.remove('exit'); // 其他卡片歸位到上方準備
+                }
+            });
             
-            const updateCards = () => {
-                document.querySelectorAll('.carousel-card').forEach(el => el.classList.remove('active'));
-                const target = document.getElementById(`card-${activeCardIndex}`);
-                if(target) target.classList.add('active');
-            };
-            
-            updateCards();
+            const target = document.getElementById(`card-${activeCardIndex}`);
+            if(target) {
+                // 如果即將進場的卡片還在退場狀態，先瞬間將它移回上方
+                if (target.classList.contains('exit')) {
+                    target.style.transition = 'none';
+                    target.classList.remove('exit');
+                    void target.offsetWidth; // 強制重繪
+                    target.style.transition = '';
+                }
+                target.classList.add('active'); // 新卡片從上方滑入
+            }
+        };
+        
+        updateCards();
 
-            if(messagesData.length > 1) {
+        if(messagesData.length > 1) {
                 carouselInterval = setInterval(() => {
                     activeCardIndex = (activeCardIndex + 1) % messagesData.length;
                     updateCards();
