@@ -428,7 +428,14 @@
     import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     // 1. 初始化 Firebase (遵循 Canvas 規則)
-    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+   const firebaseConfig = {
+  apiKey: "AIzaSyCnHAgkXvben7eh2OMGtq13biiZa24EC7s",
+  authDomain: "gradeuate-deadc.firebaseapp.com",
+  projectId: "gradeuate-deadc",
+  storageBucket: "gradeuate-deadc.firebasestorage.app",
+  messagingSenderId: "30747945421",
+  appId: "1:30747945421:web:955c16cec04af65e473c84"
+};
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
