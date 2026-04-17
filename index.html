@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>長安國小畢業祝福</title>
+    <style>
+        /* ================= 視覺與畢業氛圍設計 ================= */
+        :root {
+            --primary-navy: #0B1D3A; /* 深空藍 */
+            --primary-gold: #F4C430; /* 榮耀金 */
+            --gold-light: #FDE88A;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(244, 196, 48, 0.3);
+            --text-light: #E2E8F0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+            background: radial-gradient(circle at center, #1A365D 0%, var(--primary-navy) 100%);
+            color: var(--text-light);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* 漂浮的背景元素 (星星與學士帽) */
+        .bg-animation {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .floating-item {
+            position: absolute;
+            opacity: 0.15;
+            animation: floatUp linear infinite;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-20vh) rotate(360deg); }
+        }
+
+        /* 頂部標題 */
+        header {
+            text-align: center;
+            padding: 25px 0;
+            z-index: 10;
+            text-shadow: 0 4px 15px rgba(244, 196, 48, 0.4);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background: linear-gradient(180deg, rgba(11,29,58,0.8) 0%, rgba(11,29,58,0) 100%);
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.8rem;
+            color: var(--primary-gold);
+            letter-spacing: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        /* 主要內容區 */
+        .container {
+            display: flex;
+            flex: 1;
+            padding: 30px;
+            gap: 30px;
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 10;
+            height: calc(100vh - 120px);
+        }
+
+        /* 左側表單區 */
+        .input-section {
+            flex: 1;
+            max-width: 450px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .input-section h2 {
+            color: var(--gold-light);
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            border-bottom: 2px dashed var(--glass-border);
+            padding-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--gold-light);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 10px rgba(244, 196, 48, 0.2);
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #F4C430 0%, #D4AF37 100%);
+            color: #0B1D3A;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(244, 196, 48, 0.4);
+        }
+        .submit-btn:disabled {
+            background: #555;
+            color: #999;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* 右側展示區 (跑馬燈) */
+        .display-section {
+            flex: 2;
+            background: var(--glass-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        /* 漸層遮罩讓上下邊緣柔和 */
+        .display-section::before, .display-section::after {
+            content: '';
+            position: absolute;
+            left: 0; right: 0; height: 50px;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .display-section::before {
+            top: 0; background: linear-gradient(180deg, var(--primary-navy) 0%, transparent 100%);
+        }
+        .display-section::after {
+            bottom: 0; background: linear-gradient(0deg, var(--primary-navy) 0%, transparent 100%);
+        }
+
+        .scroll-container {
+            position: absolute;
+            top: 0; left: 20px; right: 20px;
+            /* 動畫由 JS 控制 */
+        }
+
+        .message-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-left: 6px solid var(--primary-gold);
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            color: #333;
+            transform: translateZ(0); /* 啟用硬體加速 */
+        }
+
+        .msg-header {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .msg-target {
+            color: var(--primary-navy);
+            font-size: 1.2rem;
+        }
+
+        .msg-body {
+            font-size: 1.8rem;
+            color: #222;
+            line-height: 1.5;
+            font-weight: bold;
+            word-wrap: break-word;
+        }
+
+        .msg-footer {
+            margin-top: 15px;
+            text-align: right;
+            font-size: 1.2rem;
+            color: #D4AF37;
+            font-weight: bold;
+        }
+
+        /* 管理員按鈕 */
+        .admin-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--primary-gold);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 100;
+            transition: 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        .admin-btn:hover { background: var(--primary-gold); color: var(--primary-navy); transform: rotate(90deg); }
+
+        /* Modal / Toast (取代 alert) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(11, 29, 58, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .modal.show { opacity: 1; }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 85vh;
+            overflow-y: auto;
+            color: #333;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .modal-title { margin-top: 0; color: var(--primary-navy); border-bottom: 2px solid var(--primary-gold); padding-bottom: 10px; }
+        
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .admin-table th, .admin-table td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        .admin-table th { background: #f4f4f4; color: var(--primary-navy); }
+        .btn-del { background: #ff4d4d; color: white; border:none; padding: 8px 15px; cursor: pointer; border-radius: 6px; font-weight: bold;}
+        .close-modal { position: absolute; top: 20px; right: 25px; cursor: pointer; font-size: 28px; color: #888; transition: 0.2s;}
+        .close-modal:hover { color: #333; }
+
+        .flex-row { display: flex; gap: 10px; align-items: center; margin-bottom: 20px; }
+        .admin-input { padding: 10px; border: 1px solid #ccc; border-radius: 6px; flex: 1; font-size: 16px; background: white; color: black;}
+        .admin-action-btn { padding: 10px 20px; background: var(--primary-navy); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px;}
+        .admin-action-btn:hover { background: #1a365d; }
+
+        /* Toast 提示 */
+        #toast {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            background: rgba(244, 196, 48, 0.95); color: #0B1D3A; font-weight: bold;
+            padding: 15px 30px; border-radius: 30px; z-index: 300;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            opacity: 0; visibility: hidden; transition: 0.3s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        #toast.show { opacity: 1; visibility: visible; }
+
+        /* Loading 遮罩 */
+        #loading {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--primary-navy); z-index: 1000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            color: var(--primary-gold); transition: opacity 0.5s;
+        }
+        .spinner { width: 50px; height: 50px; border: 5px solid rgba(244,196,48,0.3); border-top-color: var(--primary-gold); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;}
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* RWD 適應手機 */
+        @media (max-width: 900px) {
+            .container { flex-direction: column; height: auto; padding: 15px; }
+            body { overflow: auto; }
+            .input-section { max-width: 100%; }
+            .display-section { height: 60vh; min-height: 400px; margin-bottom: 60px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- 載入畫面 -->
+<div id="loading">
+    <div class="spinner"></div>
+    <h2>系統初始化中...</h2>
+</div>
+
+<!-- 漂浮背景 (由 JS 動態生成星星與學士帽) -->
+<div class="bg-animation" id="bgAnimation"></div>
+
+<header>
+    <h1>🎓 長安國小畢業祝福 🌟</h1>
+</header>
+
+<div class="container">
+    <!-- 左側輸入區 -->
+    <div class="input-section">
+        <h2>✨ 送上最誠摯的祝福 ✨</h2>
+        <form id="wishForm">
+            <div class="form-group">
+                <label>您的姓名</label>
+                <input type="text" id="guestName" required placeholder="例如：王小明 / 家長代表">
+            </div>
+            <div class="form-group">
+                <label>給畢業生 (姓名/班級)</label>
+                <input type="text" id="targetName" required placeholder="例如：六年甲班 全體同學 / 李大華">
+            </div>
+            <div class="form-group">
+                <label>祝福語</label>
+                <textarea id="message" rows="5" required placeholder="寫下您的期許與祝福... (例如：畢業快樂！鵬程萬里！)"></textarea>
+            </div>
+            <button type="submit" class="submit-btn" id="submitBtn">發送祝福 🚀</button>
+        </form>
+    </div>
+
+    <!-- 右側展示區 -->
+    <div class="display-section" id="displayArea">
+        <div class="scroll-container" id="scrollContainer">
+            <!-- 內容將由 JS 渲染 -->
+        </div>
+    </div>
+</div>
+
+<!-- 管理員按鈕 -->
+<button class="admin-btn" onclick="openAdmin()" title="管理員登入">⚙</button>
+
+<!-- Toast 提示 -->
+<div id="toast"><span>ℹ️</span> <span id="toastMsg">提示訊息</span></div>
+
+<!-- 管理員 Modal -->
+<div id="adminModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeAdmin()">&times;</span>
+        <h2 class="modal-title">管理員後台</h2>
+        
+        <!-- 登入區 -->
+        <div id="loginSection">
+            <p style="color: #666; margin-bottom: 20px;">請輸入管理員密碼以進行審核或設定。</p>
+            <div class="flex-row">
+                <input type="password" id="adminPass" class="admin-input" placeholder="輸入管理密碼">
+                <button onclick="adminLogin()" class="admin-action-btn">登入</button>
+            </div>
+        </div>
+
+        <!-- 管理區 (登入後顯示) -->
+        <div id="adminPanel" style="display:none;">
+            <div style="background: #f9f9f9; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <h3 style="margin-top:0; color:#333;">安全設定</h3>
+                <div class="flex-row" style="margin-bottom:0;">
+                    <input type="password" id="newPass" class="admin-input" placeholder="輸入新密碼">
+                    <button onclick="changePass()" class="admin-action-btn" style="background:#4CAF50;">修改密碼</button>
+                </div>
+            </div>
+            
+            <h3 style="color:#333;">留言管理 (由新到舊)</h3>
+            <div style="max-height: 400px; overflow-y: auto;">
+                <table class="admin-table">
+                    <thead><tr><th>時間</th><th>送件人</th><th>對象</th><th>內容</th><th>操作</th></tr></thead>
+                    <tbody id="adminTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Firebase SDK -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // 1. 初始化 Firebase (遵循 Canvas 規則)
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'changan-graduation-default';
+
+    // 資料庫路徑定義 (遵循 Rule 1)
+    const MSG_PATH = `artifacts/${appId}/public/data/messages`;
+    const CONFIG_PATH = `artifacts/${appId}/public/data/config`;
+
+    // 全域狀態
+    let currentUser = null;
+    let messagesData = [];
+    let animationFrameId = null;
+    let scrollPos = 0;
+    let isAdmin = false;
+
+    // 2. 認證流程 (遵循 Rule 3)
+    const initAuth = async () => {
+        try {
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                await signInWithCustomToken(auth, __initial_auth_token);
+            } else {
+                await signInAnonymously(auth);
+            }
+        } catch (error) {
+            console.error("Auth error:", error);
+            showToast("驗證失敗，部分功能可能無法使用");
+        }
+    };
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            currentUser = user;
+            checkAndInitAdmin();
+            loadMessages();
+        }
+    });
+
+    initAuth();
+
+    // 3. 自訂 UI 輔助函數 (取代 alert)
+    window.showToast = (msg, isSuccess = true) => {
+        const toast = document.getElementById('toast');
+        document.getElementById('toastMsg').innerText = msg;
+        toast.style.background = isSuccess ? 'rgba(244, 196, 48, 0.95)' : 'rgba(255, 77, 77, 0.95)';
+        toast.style.color = isSuccess ? '#0B1D3A' : 'white';
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+    };
+
+    // 4. 資料庫操作：檢查/初始化管理員密碼
+    async function checkAndInitAdmin() {
+        if (!currentUser) return;
+        const adminDocRef = doc(db, CONFIG_PATH, 'admin');
+        try {
+            const docSnap = await getDoc(adminDocRef);
+            if (!docSnap.exists()) {
+                // 預設密碼為 1234
+                await setDoc(adminDocRef, { password: '1234' });
+            }
+        } catch (e) {
+            console.error("Config init error:", e);
+        }
+    }
+
+    // 5. 資料庫操作：讀取留言 (實時更新)
+    function loadMessages() {
+        if (!currentUser) return;
+        const msgCollection = collection(db, MSG_PATH);
+        
+        onSnapshot(msgCollection, (snapshot) => {
+            const msgs = [];
+            snapshot.forEach((doc) => {
+                msgs.push({ id: doc.id, ...doc.data() });
+            });
+            
+            // 遵循 Rule 2: JS 端排序 (依時間戳記遞減，最新的在前面)
+            messagesData = msgs.sort((a, b) => b.timestamp - a.timestamp);
+            
+            renderMessages();
+            if(isAdmin) renderAdminTable();
+
+            // 隱藏 Loading
+            document.getElementById('loading').style.opacity = '0';
+            setTimeout(() => document.getElementById('loading').style.display = 'none', 500);
+
+        }, (error) => {
+            console.error("Listen failed: ", error);
+            showToast("無法讀取資料", false);
+        });
+    }
+
+    // 6. 資料庫操作：新增留言
+    document.getElementById('wishForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!currentUser) return showToast("尚未連線，請稍後", false);
+
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.innerText = "傳送中...";
+
+        const newMsg = {
+            guestName: document.getElementById('guestName').value.trim(),
+            targetName: document.getElementById('targetName').value.trim(),
+            message: document.getElementById('message').value.trim(),
+            timestamp: Date.now()
+        };
+
+        try {
+            await addDoc(collection(db, MSG_PATH), newMsg);
+            showToast("🎉 祝福已成功送出！");
+            document.getElementById('wishForm').reset();
+        } catch (error) {
+            console.error("Add error:", error);
+            showToast("送出失敗，請重試", false);
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "發送祝福 🚀";
+        }
+    });
+
+    // 7. 前端渲染與跑馬燈動畫邏輯
+    function renderMessages() {
+        const container = document.getElementById('scrollContainer');
+        container.innerHTML = '';
+
+        if (messagesData.length === 0) {
+            container.innerHTML = `
+                <div class="message-card" style="text-align:center; padding: 40px;">
+                    <div class="msg-body" style="color:#888;">目前尚無祝福，快來搶頭香吧！🎓</div>
+                </div>`;
+            return;
+        }
+
+        // 為了實作無限平滑滾動，將資料渲染兩次 (DOM 複製)
+        const buildCards = () => {
+            let html = '';
+            messagesData.forEach(msg => {
+                const dateStr = new Date(msg.timestamp).toLocaleString('zh-TW', { month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit'});
+                html += `
+                    <div class="message-card">
+                        <div class="msg-header">
+                            <span class="msg-target">TO: ${escapeHtml(msg.targetName)}</span>
+                            <span>${dateStr}</span>
+                        </div>
+                        <div class="msg-body">${escapeHtml(msg.message).replace(/\n/g, '<br>')}</div>
+                        <div class="msg-footer">—— 來自 ${escapeHtml(msg.guestName)} 的祝福</div>
+                    </div>
+                `;
+            });
+            return html;
+        };
+
+        container.innerHTML = buildCards() + buildCards(); // 兩份用來無縫接軌
+        startSmoothScroll();
+    }
+
+    function startSmoothScroll() {
+        const container = document.getElementById('scrollContainer');
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
+
+        // 如果資料太少不需要滾動
+        const singleSetHeight = container.scrollHeight / 2;
+        const displayHeight = document.getElementById('displayArea').clientHeight;
+        
+        if (singleSetHeight < displayHeight && messagesData.length < 3) {
+            container.style.transform = `translateY(0px)`;
+            return; 
+        }
+
+        scrollPos = 0;
+        const speed = 0.5; // 滾動速度
+
+        function scroll() {
+            scrollPos += speed;
+            // 當滾動超過第一份資料的高度時，瞬間重置為0 (無縫接軌)
+            if (scrollPos >= singleSetHeight) {
+                scrollPos = 0;
+            }
+            container.style.transform = `translateY(-${scrollPos}px)`;
+            animationFrameId = requestAnimationFrame(scroll);
+        }
+        animationFrameId = requestAnimationFrame(scroll);
+
+        // 滑鼠懸停暫停
+        container.onmouseenter = () => cancelAnimationFrame(animationFrameId);
+        container.onmouseleave = () => {
+            if(animationFrameId) cancelAnimationFrame(animationFrameId);
+            animationFrameId = requestAnimationFrame(scroll);
+        };
+    }
+
+    // 8. 管理員功能
+    window.openAdmin = () => {
+        const modal = document.getElementById('adminModal');
+        modal.style.display = 'flex';
+        setTimeout(() => modal.classList.add('show'), 10);
+    };
+
+    window.closeAdmin = () => {
+        const modal = document.getElementById('adminModal');
+        modal.classList.remove('show');
+        setTimeout(() => modal.style.display = 'none', 300);
+        // 清空輸入
+        document.getElementById('adminPass').value = '';
+    };
+
+    window.adminLogin = async () => {
+        const passInput = document.getElementById('adminPass').value;
+        if (!currentUser) return;
+
+        try {
+            const adminDoc = await getDoc(doc(db, CONFIG_PATH, 'admin'));
+            const realPass = adminDoc.data()?.password || '1234';
+
+            if (passInput === realPass) {
+                isAdmin = true;
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                renderAdminTable();
+                showToast("登入成功");
+            } else {
+                showToast("密碼錯誤", false);
+            }
+        } catch (error) {
+            showToast("驗證發生錯誤", false);
+        }
+    };
+
+    window.renderAdminTable = () => {
+        if (!isAdmin) return;
+        const tbody = document.getElementById('adminTableBody');
+        tbody.innerHTML = '';
+        messagesData.forEach(msg => {
+            const dateStr = new Date(msg.timestamp).toLocaleString('zh-TW', { month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit'});
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${dateStr}</td>
+                <td>${escapeHtml(msg.guestName)}</td>
+                <td>${escapeHtml(msg.targetName)}</td>
+                <td>${escapeHtml(msg.message).substring(0, 20)}...</td>
+                <td><button class="btn-del" onclick="deleteMsg('${msg.id}')">刪除</button></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    };
+
+    window.deleteMsg = async (id) => {
+        if (confirm("確定要刪除這筆留言嗎？此操作無法還原。")) {
+            try {
+                await deleteDoc(doc(db, MSG_PATH, id));
+                showToast("留言已刪除");
+            } catch (error) {
+                showToast("刪除失敗", false);
+            }
+        }
+    };
+
+    window.changePass = async () => {
+        const newPass = document.getElementById('newPass').value.trim();
+        if (!newPass) return showToast("請輸入新密碼", false);
+        
+        try {
+            await setDoc(doc(db, CONFIG_PATH, 'admin'), { password: newPass });
+            showToast("密碼修改成功！");
+            document.getElementById('newPass').value = '';
+        } catch (error) {
+            showToast("修改失敗", false);
+        }
+    };
+
+    // 輔助功能：防止 XSS
+    function escapeHtml(unsafe) {
+        return (unsafe || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    // 產生背景漂浮裝飾 (學士帽 🎓 與星星 ✨)
+    const bgContainer = document.getElementById('bgAnimation');
+    const icons = ['🎓', '✨', '⭐', '🎓'];
+    for(let i=0; i<20; i++) {
+        const el = document.createElement('div');
+        el.className = 'floating-item';
+        el.innerText = icons[Math.floor(Math.random() * icons.length)];
+        el.style.left = `${Math.random() * 100}%`;
+        el.style.fontSize = `${Math.random() * 20 + 20}px`;
+        el.style.animationDuration = `${Math.random() * 15 + 15}s`;
+        el.style.animationDelay = `${Math.random() * 10}s`;
+        if(el.innerText === '✨' || el.innerText === '⭐') el.style.color = '#F4C430';
+        bgContainer.appendChild(el);
+    }
+</script>
+</body>
+</html>
