@@ -110,16 +110,18 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            transition: background-image 2s ease-in-out; /* 平滑淡入淡出 */
+            transition: background-image 1s ease-in-out; /* 平滑淡入淡出 */
+            pointer-events: none;
         }
         
         /* 淺色系毛玻璃遮罩 (確保文字清晰) */
         .bg-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.25); /* 降低白底濃度，讓背景顯現 */
+            backdrop-filter: blur(3px); /* 降低模糊度 */
+            -webkit-backdrop-filter: blur(3px);
             z-index: 1;
+            pointer-events: none;
         }
 
         .wall-header { 
@@ -399,7 +401,7 @@
 
                 <div class="admin-section">
                     <h3>🖼️ 輪播背景設定 (淺色系)</h3>
-                    <p style="font-size: 0.9rem; color: #666; margin-top: 0;">請輸入圖片網址 (支援JPG, PNG)。留白表示不使用。背景每 60 秒切換一次。</p>
+                    <p style="font-size: 0.9rem; color: #666; margin-top: 0;">請輸入圖片網址 (現在已支援 <strong>Google Drive 分享連結</strong>！)。<br><span style="color:#10b981;">只要貼上 Google 雲端硬碟的分享網址，系統會自動轉換為背景圖片。</span></p>
                     <div id="bgInputsContainer">
                         <!-- JS 將動態產生 7 個輸入框 -->
                     </div>
@@ -503,6 +505,17 @@
             });
         }
 
+        // 轉換 Google Drive 網址為直連網址
+        function convertGoogleDriveUrl(url) {
+            if (!url) return url;
+            // 擷取 Google Drive 連結中的檔案 ID
+            const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+            if (match && match[1]) {
+                return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+            }
+            return url;
+        }
+
         function updateWallBackground() {
             const carouselEl = document.getElementById('bg-carousel');
             const validUrls = customBgUrls.filter(url => url && url.trim() !== '');
@@ -515,13 +528,17 @@
             }
 
             if(currentBgIndex >= validUrls.length) currentBgIndex = 0;
-            carouselEl.style.backgroundImage = `url('${validUrls[currentBgIndex]}')`;
+            
+            // 使用轉換函數處理網址
+            const displayUrl = convertGoogleDriveUrl(validUrls[currentBgIndex]);
+            carouselEl.style.backgroundImage = `url("${displayUrl}")`;
 
             // 設定 60 秒輪播
             if(validUrls.length > 1) {
                 bgRotationInterval = setInterval(() => {
                     currentBgIndex = (currentBgIndex + 1) % validUrls.length;
-                    carouselEl.style.backgroundImage = `url('${validUrls[currentBgIndex]}')`;
+                    const nextUrl = convertGoogleDriveUrl(validUrls[currentBgIndex]);
+                    carouselEl.style.backgroundImage = `url("${nextUrl}")`;
                 }, 60000); 
             }
         }
