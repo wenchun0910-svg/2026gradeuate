@@ -428,7 +428,8 @@
         import { getFirestore, collection, addDoc, onSnapshot, doc, getDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // ================= 1. 系統與 Firebase 初始化 =================
-         const firebaseConfig = {
+        // ⚠️ 部署到 GitHub Pages 的關鍵：您必須在這裡填入自己的 Firebase 設定！
+    const firebaseConfig = {
   apiKey: "AIzaSyCnHAgkXvben7eh2OMGtq13biiZa24EC7s",
   authDomain: "gradeuate-deadc.firebaseapp.com",
   projectId: "gradeuate-deadc",
@@ -437,6 +438,8 @@
   appId: "1:30747945421:web:955c16cec04af65e473c84"
 };
 
+        
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : myFirebaseConfig;
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
@@ -453,7 +456,8 @@
         let isAdminLoggedIn = false;
         
         // 背景輪播變數
-        let customBgUrls = [];
+        // 加入預設的畢業風格圖片，確保即使尚未設定也不會是白畫面
+        let customBgUrls = ["https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2000&auto=format&fit=crop"];
         let currentBgIndex = 0;
         let bgRotationInterval = null;
 
@@ -495,11 +499,13 @@
             if(!currentUser) return;
             const bgRef = doc(db, CONFIG_COLLECTION, 'backgrounds');
             onSnapshot(bgRef, (snap) => {
-                if(snap.exists()) {
-                    customBgUrls = snap.data().urls || [];
-                } else {
-                    customBgUrls = [];
+                if(snap.exists() && snap.data().urls && snap.data().urls.length > 0) {
+                    const validUrls = snap.data().urls.filter(url => url && url.trim() !== '');
+                    if (validUrls.length > 0) {
+                        customBgUrls = validUrls;
+                    }
                 }
+                // 套用背景 (有設定就用設定的，沒設定就會用上面的預設圖)
                 updateWallBackground();
                 if(isAdminLoggedIn) renderBgInputs();
             });
@@ -518,26 +524,25 @@
 
         function updateWallBackground() {
             const carouselEl = document.getElementById('bg-carousel');
-            const validUrls = customBgUrls.filter(url => url && url.trim() !== '');
             
             if (bgRotationInterval) clearInterval(bgRotationInterval);
 
-            if(validUrls.length === 0) {
+            if(customBgUrls.length === 0) {
                 carouselEl.style.backgroundImage = 'none';
                 return;
             }
 
-            if(currentBgIndex >= validUrls.length) currentBgIndex = 0;
+            if(currentBgIndex >= customBgUrls.length) currentBgIndex = 0;
             
             // 使用轉換函數處理網址
-            const displayUrl = convertGoogleDriveUrl(validUrls[currentBgIndex]);
+            const displayUrl = convertGoogleDriveUrl(customBgUrls[currentBgIndex]);
             carouselEl.style.backgroundImage = `url("${displayUrl}")`;
 
             // 設定 60 秒輪播
-            if(validUrls.length > 1) {
+            if(customBgUrls.length > 1) {
                 bgRotationInterval = setInterval(() => {
-                    currentBgIndex = (currentBgIndex + 1) % validUrls.length;
-                    const nextUrl = convertGoogleDriveUrl(validUrls[currentBgIndex]);
+                    currentBgIndex = (currentBgIndex + 1) % customBgUrls.length;
+                    const nextUrl = convertGoogleDriveUrl(customBgUrls[currentBgIndex]);
                     carouselEl.style.backgroundImage = `url("${nextUrl}")`;
                 }, 60000); 
             }
