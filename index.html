@@ -464,15 +464,18 @@
 
         // ================= 1. 系統與 Firebase 初始化 =================
         // ⚠️ 部署到 GitHub Pages 的關鍵：您必須在這裡填入自己的 Firebase 設定！
-         const firebaseConfig = {
-  apiKey: "AIzaSyCnHAgkXvben7eh2OMGtq13biiZa24EC7s",
+        const myFirebaseConfig = {
+            // 👇 請確保您貼上的設定「沒有」被 // 雙斜線給註解掉
+            // 例如： apiKey: "AIzaSyD-xxxxxxxxxxxx",
+            // 而不是 // apiKey: "AIzaSyD-xxxxxxxxxxxx",
+              apiKey: "AIzaSyCnHAgkXvben7eh2OMGtq13biiZa24EC7s",
   authDomain: "gradeuate-deadc.firebaseapp.com",
   projectId: "gradeuate-deadc",
   storageBucket: "gradeuate-deadc.firebasestorage.app",
   messagingSenderId: "30747945421",
   appId: "1:30747945421:web:955c16cec04af65e473c84"
-};
 
+        };
         
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'changan-school-app';
         const MSG_PATH = `artifacts/${appId}/public/data/blessings`;
@@ -484,22 +487,35 @@
         let currentBgIndex = 0;
         let bgRotationInterval = null;
 
-        // 嘗試啟動 Firebase (加入防呆機制)
+        // 改良版的 Firebase 啟動邏輯 (增強容錯與除錯)
+        let finalConfig = myFirebaseConfig;
         try {
-            const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : myFirebaseConfig;
-            
-            if (Object.keys(firebaseConfig).length === 0) {
-                console.warn("⚠️ 尚未設定 Firebase Config！");
-                setTimeout(() => showToast("⚠️ 請先在程式碼填入 Firebase 設定，否則無法儲存留言！"), 2000);
-                updateWallBackground(); // 先顯示預設背景
-            } else {
-                app = initializeApp(firebaseConfig);
+            // 嘗試讀取外部環境變數 (若有)
+            if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                finalConfig = JSON.parse(__firebase_config);
+            }
+        } catch (e) {
+            console.warn("環境變數解析略過，採用手動 myFirebaseConfig 設定");
+        }
+
+        // 檢查設定是否有效 (確保有填寫 apiKey)
+        if (!finalConfig || Object.keys(finalConfig).length === 0 || !finalConfig.apiKey) {
+            console.warn("⚠️ 尚未偵測到有效的 Firebase Config！");
+            setTimeout(() => showToast("⚠️ 請確認 myFirebaseConfig 已經填寫且移除了 // 註解！"), 2500);
+            updateWallBackground(); // 先顯示預設背景
+        } else {
+            try {
+                // 正式啟動
+                app = initializeApp(finalConfig);
                 auth = getAuth(app);
                 db = getFirestore(app);
                 initAuth();
+                console.log("✅ Firebase 初始化成功！");
+            } catch (e) {
+                console.error("Firebase 初始化嚴重錯誤:", e);
+                setTimeout(() => showToast("⚠️ Firebase 啟動失敗，請按 F12 檢查 Console 錯誤！"), 3000);
+                updateWallBackground();
             }
-        } catch (e) {
-            console.error("Firebase 初始化錯誤:", e);
         }
 
         async function initAuth() {
@@ -509,7 +525,12 @@
                 } else {
                     await signInAnonymously(auth);
                 }
-            } catch (e) { console.error("Auth Error", e); }
+            } catch (e) { 
+                console.error("登入驗證錯誤 (Auth Error):", e); 
+                if(e.code === 'auth/admin-restricted-operation' || e.code === 'auth/operation-not-allowed') {
+                    setTimeout(() => showToast("⚠️ 請至 Firebase 後台啟用「匿名登入(Anonymous)」功能！"), 4000);
+                }
+            }
         }
 
         if(auth) {
