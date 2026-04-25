@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>臺中市西屯區長安國小 - 畢業祝福牆</title>
+    <title>臺中市長安國小第十七屆 - 畢業祝福牆</title>
     <style>
         /* ================= 長安國小 專屬配色與全域變數 ================= */
         :root {
@@ -11,7 +11,7 @@
             --ca-blue-dark: #172554;
             --ca-yellow: #FBBF24;   /* 榮耀黃 */
             --ca-green: #32CD32;    /* 點綴綠 */
-            --glass-bg: rgba(255, 255, 255, 0.1);
+            --bg-light: #fdfbfb;    /* 淺色背景 */
             --text-main: #333333;
         }
 
@@ -20,8 +20,8 @@
             padding: 0;
             font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
             overflow: hidden;
-            background-color: var(--ca-blue-dark);
-            color: white;
+            background-color: var(--bg-light);
+            color: var(--text-main);
             transition: background 0.5s;
         }
 
@@ -34,18 +34,19 @@
             justify-content: center;
             gap: 15px;
             margin-bottom: 20px;
+            flex-wrap: wrap; /* 允許小螢幕換行 */
         }
         .school-logo svg {
-            width: 150px;
+            width: clamp(80px, 15vw, 150px);
             height: auto;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
         }
         .school-logo h1 {
             margin: 0;
-            font-size: 2.5rem;
-            color: var(--ca-yellow);
+            font-size: clamp(1.3rem, 4vw, 2.2rem);
+            color: var(--ca-blue);
             letter-spacing: 2px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            text-align: center;
         }
 
         /* ================= 視圖 1：送上祝福表單 (#submit) ================= */
@@ -58,11 +59,6 @@
             overflow-y: auto;
             align-items: center;
             padding: 30px 15px;
-        }
-
-        #view-submit .school-logo h1 {
-            color: var(--ca-blue);
-            text-shadow: none;
         }
 
         .form-card {
@@ -103,27 +99,34 @@
         /* ================= 視圖 2：畢業祝福牆 (#wall) ================= */
         #view-wall {
             display: flex; flex-direction: column; height: 100vh;
-            background: radial-gradient(circle at center, var(--ca-blue) 0%, var(--ca-blue-dark) 100%);
+            background: var(--bg-light);
             position: relative;
         }
 
-        /* 星空背景動畫 */
-        .stars-bg {
+        /* 輪播背景容器 */
+        #bg-carousel {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 0;
-            background-image: 
-                radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 160px 120px, #ddd, rgba(0,0,0,0));
-            background-repeat: repeat; background-size: 200px 200px;
-            animation: starsAnim 40s linear infinite;
+            z-index: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background-image 2s ease-in-out; /* 平滑淡入淡出 */
         }
-        @keyframes starsAnim { 0% { background-position: 0 0; } 100% { background-position: 0 -200px; } }
+        
+        /* 淺色系毛玻璃遮罩 (確保文字清晰) */
+        .bg-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 1;
+        }
 
-        .wall-header { text-align: center; padding: 20px 0; z-index: 10; background: linear-gradient(180deg, rgba(23, 37, 84, 0.9) 0%, transparent 100%); }
+        .wall-header { 
+            text-align: center; padding: 20px 0; z-index: 10; 
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
 
         .wall-layout {
             display: flex; flex: 1; padding: 0 40px 40px 40px; gap: 60px;
@@ -134,14 +137,15 @@
         .qr-section {
             flex: 0.8; max-width: 400px; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
-            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,1); border-radius: 20px;
             padding: 30px; text-align: center;
         }
-        .qr-section h3 { color: var(--ca-yellow); font-size: 2rem; margin-top: 0; margin-bottom: 15px; }
-        .qr-section p { font-size: 1.3rem; color: #ddd; margin-bottom: 30px; line-height: 1.5; }
-        .qr-box { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 0 30px rgba(251, 191, 36, 0.3); margin-bottom: 20px; }
-        .qr-box img { width: 220px; height: 220px; display: block; }
+        .qr-section h3 { color: var(--ca-blue); font-size: clamp(1.5rem, 4vw, 2rem); margin-top: 0; margin-bottom: 15px; }
+        .qr-section p { font-size: clamp(1rem, 3vw, 1.3rem); color: #555; margin-bottom: 30px; line-height: 1.5; font-weight: bold;}
+        .qr-box { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 0 20px rgba(30, 58, 138, 0.15); margin-bottom: 20px; }
+        .qr-box img { width: clamp(120px, 30vw, 220px); height: clamp(120px, 30vw, 220px); display: block; }
 
         /* 右側：輪轉祝福區 (Carousel) */
         .carousel-section {
@@ -160,7 +164,7 @@
             background: rgba(255, 255, 255, 0.95); color: var(--text-main);
             border-left: 10px solid var(--ca-yellow);
             padding: 40px; border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
             transition: opacity 1s ease, transform 1s ease;
             box-sizing: border-box;
             pointer-events: none;
@@ -177,14 +181,14 @@
             z-index: 1;
         }
         
-        .carousel-card .target { color: var(--ca-blue); font-size: 1.6rem; font-weight: bold; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
-        .carousel-card .msg { font-size: 2.5rem; line-height: 1.5; font-weight: bold; word-wrap: break-word; color: #222;}
-        .carousel-card .sender { margin-top: 25px; text-align: right; font-size: 1.8rem; color: #d97706; font-weight: bold; }
+        .carousel-card .target { color: var(--ca-blue); font-size: clamp(1.2rem, 3vw, 1.6rem); font-weight: bold; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+        .carousel-card .msg { font-size: clamp(1.5rem, 5vw, 2.5rem); line-height: 1.5; font-weight: bold; word-wrap: break-word; color: #222;}
+        .carousel-card .sender { margin-top: 25px; text-align: right; font-size: clamp(1.2rem, 4vw, 1.8rem); color: #d97706; font-weight: bold; }
 
         /* ================= 提示框與管理員 Modal ================= */
         #toast {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            background: var(--ca-yellow); color: var(--ca-blue-dark);
+            background: var(--ca-blue); color: white;
             padding: 15px 30px; border-radius: 30px; z-index: 2000;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             opacity: 0; visibility: hidden; transition: 0.3s;
@@ -194,15 +198,16 @@
 
         .admin-btn {
             position: fixed; bottom: 20px; right: 20px;
-            background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.5);
-            border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; width: 50px; height: 50px;
+            background: rgba(30, 58, 138, 0.1); color: var(--ca-blue);
+            border: 1px solid rgba(30, 58, 138, 0.3); border-radius: 50%; width: 50px; height: 50px;
             font-size: 24px; cursor: pointer; z-index: 100; transition: 0.3s;
+            backdrop-filter: blur(5px);
         }
-        .admin-btn:hover { color: white; background: rgba(255,255,255,0.3); transform: rotate(90deg); }
+        .admin-btn:hover { color: white; background: var(--ca-blue); transform: rotate(90deg); }
 
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
             z-index: 1000; justify-content: center; align-items: center;
         }
         .modal-content {
@@ -219,16 +224,19 @@
         .btn-del { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
         .btn-del:hover { background: #dc2626; }
         
-        .flex-row { display: flex; gap: 10px; align-items: center; }
+        .flex-row { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
         .admin-input { padding: 10px; border: 1px solid #ccc; border-radius: 6px; flex: 1; font-size: 16px; }
         .btn-action { padding: 10px 20px; background: var(--ca-blue); color: white; border: none; border-radius: 6px; cursor: pointer; }
         
+        /* 響應式排版 Media Queries */
         @media (max-width: 900px) {
-            .wall-layout { flex-direction: column; overflow-y: auto; padding: 15px; height: auto; }
+            .wall-layout { flex-direction: column; overflow-y: auto; padding: 15px; gap: 20px; height: auto; justify-content: flex-start;}
             #view-wall { height: auto; min-height: 100vh; overflow-y: auto;}
-            .qr-section { margin-bottom: 30px; max-width: 100%; flex: none;}
-            .carousel-section { flex: none; width: 100%; min-height: 400px; margin-bottom: 50px;}
-            .carousel-card { position: relative; transform: none !important; opacity: 1; margin-bottom: 20px; top: 0;}
+            .qr-section { margin-bottom: 10px; max-width: 100%; flex: none; padding: 20px;}
+            
+            .carousel-section { flex: none; width: 100%; min-height: 350px; margin-bottom: 50px; display: flex; align-items: flex-start;}
+            .carousel-container { min-height: 350px; }
+            .carousel-card { padding: 25px; border-left-width: 8px; }
         }
     </style>
 </head>
@@ -236,13 +244,10 @@
 
     <div id="toast">提示訊息</div>
 
-    <!-- 背景星空 -->
-    <div class="stars-bg" id="starsBg"></div>
-
     <!-- ================= 視圖 1：送上祝福 (手機填寫端) ================= -->
     <div id="view-submit" class="hidden-view">
         <div class="school-logo" style="margin-top: 20px;">
-            <!-- 客製化 SVG：長安國小 吉祥物毛毛蟲 -->
+            <!-- 共同 SVG：長安國小 吉祥物毛毛蟲 -->
             <svg viewBox="0 0 240 120" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -250,47 +255,32 @@
                         <stop offset="100%" stop-color="#e6e6e6" />
                     </linearGradient>
                 </defs>
-                <!-- 背部綠色尖刺 -->
                 <polygon points="30,40 35,15 45,35" fill="#32CD32"/>
                 <polygon points="60,30 65,10 75,28" fill="#32CD32"/>
                 <polygon points="90,25 95,5 105,25" fill="#32CD32"/>
                 <polygon points="120,25 125,5 135,25" fill="#32CD32"/>
                 <polygon points="150,30 155,10 165,30" fill="#32CD32"/>
-                
-                <!-- 主體 (毛毛蟲形狀) -->
                 <path d="M 10,90 C 0,90 0,40 50,30 C 100,20 160,20 190,40 C 230,50 230,90 200,100 C 150,110 50,110 10,90 Z" fill="url(#bodyGrad)" stroke="#cccccc" stroke-width="2"/>
-                
-                <!-- 頂部橘色區塊 -->
                 <path d="M 20,60 C 20,35 60,25 100,25 C 150,25 180,35 190,50 C 190,65 170,45 100,45 C 50,45 20,70 20,60 Z" fill="#FF8C00"/>
-                
-                <!-- 觸角 -->
                 <path d="M 180,40 Q 185,15 195,20" stroke="#32CD32" stroke-width="6" fill="none" stroke-linecap="round"/>
                 <path d="M 185,25 L 195,30" stroke="white" stroke-width="2"/>
                 <path d="M 195,45 Q 210,25 215,35" stroke="#32CD32" stroke-width="6" fill="none" stroke-linecap="round"/>
                 <path d="M 205,35 L 213,40" stroke="white" stroke-width="2"/>
-                
-                <!-- 橘色區塊上的藍綠斑點 -->
                 <circle cx="60" cy="35" r="4.5" fill="#1E90FF"/>
                 <circle cx="90" cy="32" r="4.5" fill="#32CD32"/>
                 <circle cx="120" cy="32" r="4.5" fill="#1E90FF"/>
                 <circle cx="150" cy="38" r="4.5" fill="#32CD32"/>
-                
-                <!-- 側邊橘色拱形條紋 -->
                 <path d="M 25,85 Q 35,60 45,85" stroke="#FF8C00" stroke-width="6" fill="none" stroke-linecap="round"/>
                 <path d="M 55,90 Q 65,60 75,90" stroke="#FF8C00" stroke-width="6" fill="none" stroke-linecap="round"/>
                 <path d="M 85,92 Q 95,65 105,92" stroke="#FF8C00" stroke-width="6" fill="none" stroke-linecap="round"/>
                 <path d="M 115,92 Q 125,65 135,92" stroke="#FF8C00" stroke-width="6" fill="none" stroke-linecap="round"/>
                 <path d="M 145,90 Q 155,60 165,90" stroke="#FF8C00" stroke-width="6" fill="none" stroke-linecap="round"/>
-                
-                <!-- 眼睛 -->
                 <circle cx="195" cy="65" r="4" fill="black"/>
                 <circle cx="194" cy="64" r="1.5" fill="white"/>
-                
-                <!-- 文字：長安 國小 -->
                 <text x="40" y="70" fill="#1E3A8A" font-size="28" font-weight="bold" font-family="cursive" transform="rotate(-10 40 70)">長安</text>
                 <text x="110" y="65" fill="#2E8B57" font-size="16" font-weight="bold" font-family="sans-serif">國小</text>
             </svg>
-            <h1>長安國小 畢業祝福</h1>
+            <h1>臺中市長安國小第十七屆<br>畢業祝福</h1>
         </div>
 
         <div class="form-card">
@@ -298,11 +288,11 @@
             <form id="wishForm">
                 <div class="form-group">
                     <label>您的姓名 / 稱謂</label>
-                    <input type="text" id="guestName" required placeholder="例如：王小明 / 605家長">
+                    <input type="text" id="guestName" required placeholder="例如：王小明 / 家長會長">
                 </div>
                 <div class="form-group">
                     <label>送給哪位畢業生 (或班級)</label>
-                    <input type="text" id="targetName" required placeholder="例如：六年五班 / 王小安">
+                    <input type="text" id="targetName" required placeholder="例如：六年甲班 / 李大華">
                 </div>
                 <div class="form-group">
                     <label>祝福內容</label>
@@ -316,6 +306,10 @@
 
     <!-- ================= 視圖 2：畢業祝福牆 (大螢幕端) ================= -->
     <div id="view-wall" class="hidden-view">
+        <!-- 動態背景輪播容器 -->
+        <div id="bg-carousel"></div>
+        <div class="bg-overlay"></div> <!-- 淺色半透明遮罩 -->
+
         <div class="wall-header">
             <div class="school-logo">
                 <svg viewBox="0 0 240 120" xmlns="http://www.w3.org/2000/svg">
@@ -350,7 +344,7 @@
                     <text x="40" y="70" fill="#1E3A8A" font-size="28" font-weight="bold" font-family="cursive" transform="rotate(-10 40 70)">長安</text>
                     <text x="110" y="65" fill="#2E8B57" font-size="16" font-weight="bold" font-family="sans-serif">國小</text>
                 </svg>
-                <h1>臺中市西屯區長安國小 第十七屆畢業祝福</h1>
+                <h1>臺中市長安國小第十七屆 畢業祝福牆</h1>
             </div>
         </div>
 
@@ -386,7 +380,7 @@
             
             <!-- 登入區塊 -->
             <div id="loginSection">
-                <p>請輸入管理員密碼以進入設定</p>
+                <p>請輸入管理員密碼以進入設定 (預設: 1234)</p>
                 <div class="flex-row">
                     <input type="password" id="adminPassword" class="admin-input" placeholder="請輸入密碼">
                     <button class="btn-action" onclick="verifyLogin()">登入</button>
@@ -402,8 +396,17 @@
                         <button class="btn-action" style="background:#10b981;" onclick="changePassword()">確認修改</button>
                     </div>
                 </div>
-                
+
                 <div class="admin-section">
+                    <h3>🖼️ 輪播背景設定 (淺色系)</h3>
+                    <p style="font-size: 0.9rem; color: #666; margin-top: 0;">請輸入圖片網址 (支援JPG, PNG)。留白表示不使用。背景每 60 秒切換一次。</p>
+                    <div id="bgInputsContainer">
+                        <!-- JS 將動態產生 7 個輸入框 -->
+                    </div>
+                    <button class="btn-action" style="background:#8b5cf6; margin-top: 15px;" onclick="saveBackgrounds()">💾 儲存背景設定</button>
+                </div>
+                
+                <div class="admin-section" style="border-bottom: none;">
                     <h3>🗑️ 留言管理</h3>
                     <div style="max-height: 300px; overflow-y: auto;">
                         <table class="admin-table">
@@ -423,7 +426,7 @@
         import { getFirestore, collection, addDoc, onSnapshot, doc, getDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // ================= 1. 系統與 Firebase 初始化 =================
-       const firebaseConfig = {
+         const firebaseConfig = {
   apiKey: "AIzaSyCnHAgkXvben7eh2OMGtq13biiZa24EC7s",
   authDomain: "gradeuate-deadc.firebaseapp.com",
   projectId: "gradeuate-deadc",
@@ -431,6 +434,7 @@
   messagingSenderId: "30747945421",
   appId: "1:30747945421:web:955c16cec04af65e473c84"
 };
+
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
@@ -438,13 +442,18 @@
         
         // Firestore 集合路徑
         const MSG_PATH = `artifacts/${appId}/public/data/blessings`;
-        const CONFIG_PATH = `artifacts/${appId}/public/data/config`; // 管理員密碼存放處
+        const CONFIG_COLLECTION = `artifacts/${appId}/public/data/config`; // 管理設定存放處
 
         let currentUser = null;
         let messagesData = [];
         let carouselInterval = null;
         let activeCardIndex = 0;
         let isAdminLoggedIn = false;
+        
+        // 背景輪播變數
+        let customBgUrls = [];
+        let currentBgIndex = 0;
+        let bgRotationInterval = null;
 
         const initAuth = async () => {
             try {
@@ -461,6 +470,7 @@
                 currentUser = user;
                 loadMessages();
                 initAdminConfig();
+                listenToBackgrounds();
             }
         });
 
@@ -469,7 +479,7 @@
         // 確保密碼設定檔存在
         async function initAdminConfig() {
             if(!currentUser) return;
-            const configRef = doc(db, CONFIG_PATH, 'admin');
+            const configRef = doc(db, CONFIG_COLLECTION, 'admin');
             try {
                 const snap = await getDoc(configRef);
                 if (!snap.exists()) {
@@ -478,24 +488,57 @@
             } catch(e) { console.error(e); }
         }
 
+        // 監聽並套用背景輪播設定
+        function listenToBackgrounds() {
+            if(!currentUser) return;
+            const bgRef = doc(db, CONFIG_COLLECTION, 'backgrounds');
+            onSnapshot(bgRef, (snap) => {
+                if(snap.exists()) {
+                    customBgUrls = snap.data().urls || [];
+                } else {
+                    customBgUrls = [];
+                }
+                updateWallBackground();
+                if(isAdminLoggedIn) renderBgInputs();
+            });
+        }
+
+        function updateWallBackground() {
+            const carouselEl = document.getElementById('bg-carousel');
+            const validUrls = customBgUrls.filter(url => url && url.trim() !== '');
+            
+            if (bgRotationInterval) clearInterval(bgRotationInterval);
+
+            if(validUrls.length === 0) {
+                carouselEl.style.backgroundImage = 'none';
+                return;
+            }
+
+            if(currentBgIndex >= validUrls.length) currentBgIndex = 0;
+            carouselEl.style.backgroundImage = `url('${validUrls[currentBgIndex]}')`;
+
+            // 設定 60 秒輪播
+            if(validUrls.length > 1) {
+                bgRotationInterval = setInterval(() => {
+                    currentBgIndex = (currentBgIndex + 1) % validUrls.length;
+                    carouselEl.style.backgroundImage = `url('${validUrls[currentBgIndex]}')`;
+                }, 60000); 
+            }
+        }
+
         // ================= 2. SPA 路由控制 =================
         function handleRouting() {
             const hash = window.location.hash || '#wall';
             const viewSubmit = document.getElementById('view-submit');
             const viewWall = document.getElementById('view-wall');
-            const starsBg = document.getElementById('starsBg');
 
             if (hash === '#submit') {
                 viewWall.classList.add('hidden-view');
-                starsBg.style.display = 'none';
                 viewSubmit.classList.remove('hidden-view');
-                document.body.style.backgroundColor = '#f0f4f8';
                 if(carouselInterval) clearInterval(carouselInterval);
             } else {
                 viewSubmit.classList.add('hidden-view');
-                starsBg.style.display = 'block';
                 viewWall.classList.remove('hidden-view');
-                document.body.style.backgroundColor = 'var(--ca-blue-dark)';
                 
                 const currentUrl = window.location.href.split('#')[0];
                 const submitUrl = currentUrl + '#submit';
@@ -583,44 +626,40 @@
         }
 
         function startCarousel() {
-            // 手機版不輪轉
-            if(window.innerWidth <= 900) return;
             if(carouselInterval) clearInterval(carouselInterval);
             if(messagesData.length === 0) return;
 
-            // 如果原本的 activeCardIndex 已經超出範圍，歸零
-        if(activeCardIndex >= messagesData.length) activeCardIndex = 0;
-        
-        const updateCards = () => {
-            document.querySelectorAll('.carousel-card').forEach(el => {
-                if (el.classList.contains('active')) {
-                    el.classList.remove('active');
-                    el.classList.add('exit'); // 舊卡片往下方退場
-                } else if (el.id !== `card-${activeCardIndex}`) {
-                    el.classList.remove('exit'); // 其他卡片歸位到上方準備
-                }
-            });
+            if(activeCardIndex >= messagesData.length) activeCardIndex = 0;
             
-            const target = document.getElementById(`card-${activeCardIndex}`);
-            if(target) {
-                // 如果即將進場的卡片還在退場狀態，先瞬間將它移回上方
-                if (target.classList.contains('exit')) {
-                    target.style.transition = 'none';
-                    target.classList.remove('exit');
-                    void target.offsetWidth; // 強制重繪
-                    target.style.transition = '';
+            const updateCards = () => {
+                document.querySelectorAll('.carousel-card').forEach(el => {
+                    if (el.classList.contains('active')) {
+                        el.classList.remove('active');
+                        el.classList.add('exit');
+                    } else if (el.id !== `card-${activeCardIndex}`) {
+                        el.classList.remove('exit');
+                    }
+                });
+                
+                const target = document.getElementById(`card-${activeCardIndex}`);
+                if(target) {
+                    if (target.classList.contains('exit')) {
+                        target.style.transition = 'none';
+                        target.classList.remove('exit');
+                        void target.offsetWidth; 
+                        target.style.transition = '';
+                    }
+                    target.classList.add('active'); 
                 }
-                target.classList.add('active'); // 新卡片從上方滑入
-            }
-        };
-        
-        updateCards();
+            };
+            
+            updateCards();
 
-        if(messagesData.length > 1) {
+            if(messagesData.length > 1) {
                 carouselInterval = setInterval(() => {
                     activeCardIndex = (activeCardIndex + 1) % messagesData.length;
                     updateCards();
-                }, 6000); // 每 6 秒切換一次卡片
+                }, 6000); 
             }
         }
 
@@ -635,15 +674,17 @@
         };
 
         window.verifyLogin = async () => {
+            if(!currentUser) return;
             const input = document.getElementById('adminPassword').value;
             try {
-                const snap = await getDoc(doc(db, CONFIG_PATH, 'admin'));
+                const snap = await getDoc(doc(db, CONFIG_COLLECTION, 'admin'));
                 const realPass = snap.exists() ? snap.data().password : '1234';
                 if(input === realPass) {
                     isAdminLoggedIn = true;
                     document.getElementById('loginSection').style.display = 'none';
                     document.getElementById('adminPanel').style.display = 'block';
                     renderAdminTable();
+                    renderBgInputs();
                     showToast("✅ 登入成功");
                 } else {
                     showToast("❌ 密碼錯誤");
@@ -652,13 +693,45 @@
         };
 
         window.changePassword = async () => {
+            if(!currentUser) return;
             const newPass = document.getElementById('newPassword').value.trim();
             if(!newPass) return showToast("請輸入新密碼");
             try {
-                await setDoc(doc(db, CONFIG_PATH, 'admin'), { password: newPass });
+                await setDoc(doc(db, CONFIG_COLLECTION, 'admin'), { password: newPass });
                 showToast("✅ 密碼已更新");
                 document.getElementById('newPassword').value = '';
             } catch(e) { showToast("修改失敗"); }
+        };
+
+        // 渲染背景設定輸入框 (7個)
+        window.renderBgInputs = () => {
+            const container = document.getElementById('bgInputsContainer');
+            container.innerHTML = '';
+            for(let i=0; i<7; i++) {
+                const val = customBgUrls[i] || '';
+                container.innerHTML += `
+                    <div class="flex-row">
+                        <span style="width: 25px; color:#666;">${i+1}.</span>
+                        <input type="text" id="bg-input-${i}" class="admin-input" placeholder="https://..." value="${val}">
+                    </div>
+                `;
+            }
+        };
+
+        // 儲存背景設定
+        window.saveBackgrounds = async () => {
+            if(!currentUser) return;
+            const newUrls = [];
+            for(let i=0; i<7; i++) {
+                const input = document.getElementById(`bg-input-${i}`).value.trim();
+                newUrls.push(input);
+            }
+            try {
+                await setDoc(doc(db, CONFIG_COLLECTION, 'backgrounds'), { urls: newUrls });
+                showToast("✅ 背景設定已儲存");
+            } catch(e) {
+                showToast("儲存失敗");
+            }
         };
 
         window.renderAdminTable = () => {
@@ -677,6 +750,7 @@
         };
 
         window.deleteMessage = async (id) => {
+            if(!currentUser) return;
             if(!confirm("確定要刪除這筆留言嗎？")) return;
             try {
                 await deleteDoc(doc(db, MSG_PATH, id));
