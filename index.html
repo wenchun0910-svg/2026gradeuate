@@ -149,19 +149,19 @@
 
         /* 左側：QRCode 區 */
         .qr-section {
-            flex: 0.8; max-width: 450px; display: flex; flex-direction: column; /* 將最大寬度從 400px 放大到 450px */
+            flex: 0.8; max-width: 450px; display: flex; flex-direction: column; 
             justify-content: center; align-items: center;
             background: rgba(255, 255, 255, 0.95);
             border: 3px double var(--theme-primary); 
             border-radius: var(--border-radius);
-            padding: 30px; text-align: center;
+            padding: 15px 20px; text-align: center; /* 大幅減少上下左右留白 */
             box-shadow: 8px 8px 0px rgba(139, 0, 0, 0.08);
         }
-        .qr-section h3 { color: var(--theme-primary); font-size: clamp(1.5rem, 4vw, 2.2rem); margin-top: 0; margin-bottom: 15px; letter-spacing: 2px;}
-        .qr-section p { font-size: clamp(1rem, 3vw, 1.3rem); color: var(--theme-dark); margin-bottom: 25px; line-height: 1.6; font-weight: bold;}
+        .qr-section h3 { color: var(--theme-primary); font-size: clamp(1.5rem, 4vw, 2.2rem); margin-top: 0; margin-bottom: 5px; letter-spacing: 2px;} /* 減少與下方文字的距離 */
+        .qr-section p { font-size: clamp(1rem, 3vw, 1.3rem); color: var(--theme-dark); margin-bottom: 15px; line-height: 1.4; font-weight: bold;} /* 縮小行距與留白 */
         
         /* 調整 QR Code 白色底框與圖片尺寸，讓 QR Code 填滿更多空間 */
-        .qr-box { background: white; padding: 10px; border: 1px solid #ddd; margin-bottom: 20px; }
+        .qr-box { background: white; padding: 5px; border: 1px solid #ddd; margin-bottom: 5px; } /* 縮小 QR code 白色邊框 */
         .qr-box img { width: clamp(150px, 35vw, 320px); height: clamp(150px, 35vw, 320px); display: block; }
 
         /* 右側：輪轉祝福區 (Carousel) */
@@ -351,11 +351,11 @@
             <form id="wishForm">
                 <div class="form-group">
                     <label>您的姓名 / 稱謂</label>
-                    <input type="text" id="guestName" required placeholder="例如：李大仁 / 家長">
+                    <input type="text" id="guestName" required placeholder="例如：王小明 / 家長會長">
                 </div>
                 <div class="form-group">
                     <label>送給哪位畢業生 (或班級)</label>
-                    <input type="text" id="targetName" required placeholder="例如：605 / 李小安">
+                    <input type="text" id="targetName" required placeholder="例如：六年甲班 / 李大華">
                 </div>
                 <div class="form-group">
                     <label>祝福內容</label>
@@ -529,7 +529,7 @@
         // ================= 1. 系統與 Firebase 初始化 =================
         // ⚠️ 部署到 GitHub Pages 的關鍵：您必須在這裡填入自己的 Firebase 設定！
         const myFirebaseConfig = {
-              apiKey: "AIzaSyCnHAgkXvben7eh2OMGtq13biiZa24EC7s",
+           apiKey: "AIzaSyCnHAgkXvben7eh2OMGtq13biiZa24EC7s",
   authDomain: "gradeuate-deadc.firebaseapp.com",
   projectId: "gradeuate-deadc",
   storageBucket: "gradeuate-deadc.firebasestorage.app",
