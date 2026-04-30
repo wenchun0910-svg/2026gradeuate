@@ -149,7 +149,7 @@
 
         /* 左側：QRCode 區 */
         .qr-section {
-            flex: 0.8; max-width: 400px; display: flex; flex-direction: column;
+            flex: 0.8; max-width: 450px; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
             background: rgba(255, 255, 255, 0.95);
             border: 3px double var(--theme-primary); 
@@ -157,10 +157,10 @@
             padding: 30px; text-align: center;
             box-shadow: 8px 8px 0px rgba(139, 0, 0, 0.08);
         }
-        .qr-section h3 { color: var(--theme-primary); font-size: clamp(1.5rem, 4vw, 2rem); margin-top: 0; margin-bottom: 15px; letter-spacing: 2px;}
-        .qr-section p { font-size: clamp(1rem, 3vw, 1.2rem); color: var(--theme-dark); margin-bottom: 30px; line-height: 1.8; font-weight: bold;}
+        .qr-section h3 { color: var(--theme-primary); font-size: clamp(1.8rem, 4vw, 2.5rem); margin-top: 0; margin-bottom: 15px; letter-spacing: 2px;}
+        .qr-section p { font-size: clamp(1.1rem, 3vw, 1.4rem); color: var(--theme-dark); margin-bottom: 30px; line-height: 1.8; font-weight: bold;}
         .qr-box { background: white; padding: 15px; border: 1px solid #ddd; margin-bottom: 20px; }
-        .qr-box img { width: clamp(120px, 30vw, 220px); height: clamp(120px, 30vw, 220px); display: block; }
+        .qr-box img { width: clamp(150px, 40vw, 320px); height: clamp(150px, 40vw, 320px); display: block; }
 
         /* 右側：輪轉祝福區 (Carousel) */
         .carousel-section {
@@ -349,11 +349,11 @@
             <form id="wishForm">
                 <div class="form-group">
                     <label>您的姓名 / 稱謂</label>
-                    <input type="text" id="guestName" required placeholder="例如：李大仁 / 家長">
+                    <input type="text" id="guestName" required placeholder="例如：王小明 / 家長會長">
                 </div>
                 <div class="form-group">
                     <label>送給哪位畢業生 (或班級)</label>
-                    <input type="text" id="targetName" required placeholder="例如：605/ 李小安">
+                    <input type="text" id="targetName" required placeholder="例如：六年甲班 / 李大華">
                 </div>
                 <div class="form-group">
                     <label>祝福內容</label>
@@ -515,7 +515,7 @@
                 
                 const currentUrl = window.location.href.split('#')[0];
                 const submitUrl = currentUrl + '#submit';
-                document.getElementById('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(submitUrl)}&color=1E3A8A`;
+                document.getElementById('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=350x350&data=${encodeURIComponent(submitUrl)}&color=1E3A8A`;
                 
                 if(messagesData.length > 0) startCarousel();
             }
@@ -526,7 +526,7 @@
         // ================= 1. 系統與 Firebase 初始化 =================
         // ⚠️ 部署到 GitHub Pages 的關鍵：您必須在這裡填入自己的 Firebase 設定！
         const myFirebaseConfig = {
-           apiKey: "AIzaSyCnHAgkXvben7eh2OMGtq13biiZa24EC7s",
+              apiKey: "AIzaSyCnHAgkXvben7eh2OMGtq13biiZa24EC7s",
   authDomain: "gradeuate-deadc.firebaseapp.com",
   projectId: "gradeuate-deadc",
   storageBucket: "gradeuate-deadc.firebasestorage.app",
