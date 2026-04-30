@@ -235,6 +235,24 @@
         }
         .admin-btn:hover { color: white; background: var(--theme-primary); transform: rotate(90deg); }
 
+        /* 瀏覽人次標籤 */
+        .visitor-count {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(253, 248, 245, 0.85);
+            border: 2px solid var(--theme-primary);
+            color: var(--theme-primary);
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            font-weight: bold;
+            z-index: 100;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            box-shadow: 4px 4px 0px rgba(139, 0, 0, 0.1);
+            backdrop-filter: blur(4px);
+        }
+
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(43, 43, 43, 0.8); backdrop-filter: blur(3px);
@@ -268,12 +286,24 @@
             .carousel-section { flex: none; width: 100%; min-height: 350px; margin-bottom: 50px; display: flex; align-items: flex-start;}
             .carousel-container { min-height: 350px; }
             .carousel-card { padding: 25px; border-left-width: 8px; }
+            
+            /* 手機版瀏覽人次改到左上角避免擋住畫面 */
+            .visitor-count {
+                bottom: auto;
+                top: 10px;
+                left: 10px;
+                padding: 5px 10px;
+                font-size: 0.85rem;
+            }
         }
     </style>
 </head>
 <body>
 
     <div id="toast">提示訊息</div>
+
+    <!-- 瀏覽人次顯示區 -->
+    <div id="visitorCountDisplay" class="visitor-count" style="display: none;">累積瀏覽人次：--</div>
 
     <!-- ================= 視圖 1：送上祝福 (手機填寫端) ================= -->
     <div id="view-submit" class="hidden-view">
@@ -323,7 +353,7 @@
                 </div>
                 <div class="form-group">
                     <label>送給哪位畢業生 (或班級)</label>
-                    <input type="text" id="targetName" required placeholder="例如：六年五班 / 李小安">
+                    <input type="text" id="targetName" required placeholder="例如：605/ 李小安">
                 </div>
                 <div class="form-group">
                     <label>祝福內容</label>
@@ -456,7 +486,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, getDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, getDoc, setDoc, deleteDoc, increment } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // ================= 0. 介面與路由控制 (移至最前面，確保畫面一定會顯示) =================
         window.showToast = function(msg) {
@@ -496,13 +526,12 @@
         // ================= 1. 系統與 Firebase 初始化 =================
         // ⚠️ 部署到 GitHub Pages 的關鍵：您必須在這裡填入自己的 Firebase 設定！
         const myFirebaseConfig = {
-            apiKey: "AIzaSyCnHAgkXvben7eh2OMGtq13biiZa24EC7s",
+           apiKey: "AIzaSyCnHAgkXvben7eh2OMGtq13biiZa24EC7s",
   authDomain: "gradeuate-deadc.firebaseapp.com",
   projectId: "gradeuate-deadc",
   storageBucket: "gradeuate-deadc.firebasestorage.app",
   messagingSenderId: "30747945421",
   appId: "1:30747945421:web:955c16cec04af65e473c84"
-
 
         };
         
@@ -573,6 +602,7 @@
                     loadMessages();
                     initAdminConfig();
                     listenToBackgrounds();
+                    trackAndDisplayVisitor(); // 追蹤並顯示瀏覽人次
                 }
             });
         }
@@ -596,6 +626,35 @@
                 }
                 updateWallBackground();
                 if(isAdminLoggedIn) renderBgInputs();
+            });
+        }
+
+        // 追蹤與顯示瀏覽人次
+        async function trackAndDisplayVisitor() {
+            if (!db || !currentUser) return;
+            const statsRef = doc(db, CONFIG_COLLECTION, 'stats');
+
+            // 1. 如果這台裝置沒有瀏覽過，則在資料庫增加 1 人次
+            const hasVisited = localStorage.getItem('changan_visited_v1');
+            if (!hasVisited) {
+                try {
+                    // 使用 Firebase 內建的 increment 確保多人同時進入時不會算錯
+                    await setDoc(statsRef, { count: increment(1) }, { merge: true });
+                    localStorage.setItem('changan_visited_v1', 'true');
+                } catch (e) {
+                    console.error("更新瀏覽人次失敗:", e);
+                }
+            }
+
+            // 2. 即時監聽資料庫中的人次並更新畫面
+            onSnapshot(statsRef, (snap) => {
+                const countDisplay = document.getElementById('visitorCountDisplay');
+                if (snap.exists() && snap.data().count) {
+                    countDisplay.innerText = `累積瀏覽人次：${snap.data().count}`;
+                } else {
+                    countDisplay.innerText = `累積瀏覽人次：1`;
+                }
+                countDisplay.style.display = 'block';
             });
         }
 
