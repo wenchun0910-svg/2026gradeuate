@@ -5,22 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>臺中市長安國小第十七屆 - 畢業祝福牆</title>
     <style>
-        /* ================= 長安國小 專屬配色與全域變數 ================= */
+        /* ================= 長安國小 中式古典風格配色與全域變數 ================= */
         :root {
-            --ca-blue: #1E3A8A;     /* 長安藍 */
-            --ca-blue-dark: #172554;
-            --ca-yellow: #FBBF24;   /* 榮耀黃 */
-            --ca-green: #32CD32;    /* 點綴綠 */
-            --bg-light: #fdfbfb;    /* 淺色背景 */
-            --text-main: #333333;
+            --theme-primary: #1E3A8A; /* 青花藍 Porcelain Blue (字體與邊框) */
+            --theme-dark: #0B1D3A;    /* 深藏青 Dark Navy */
+            --theme-accent: #C0392B;  /* 朱紅 Vermilion (保留給落款印章點綴) */
+            --theme-bg: #FDF8F5;      /* 宣紙白 Rice Paper */
+            --theme-gold: #D4AF37;    /* 琉璃金 Imperial Gold */
+            --text-main: #1E3A8A;     /* 主字體顏色改為藍色 */
+            --border-radius: 4px;     /* 中式木作微圓角 */
         }
 
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+            /* 改用楷體與宋體，呈現中式書法與古典文學氣息 */
+            font-family: 'Kaiti TC', 'BiauKai', 'Noto Serif TC', 'Songti TC', serif;
             overflow: hidden;
-            background-color: var(--bg-light);
+            background-color: var(--theme-bg);
             color: var(--text-main);
             transition: background 0.5s;
         }
@@ -34,19 +36,20 @@
             justify-content: center;
             gap: 15px;
             margin-bottom: 20px;
-            flex-wrap: wrap; /* 允許小螢幕換行 */
+            flex-wrap: wrap; 
         }
         .school-logo svg {
             width: clamp(80px, 15vw, 150px);
             height: auto;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+            filter: drop-shadow(0 4px 0px rgba(139, 0, 0, 0.1));
         }
         .school-logo h1 {
             margin: 0;
             font-size: clamp(1.3rem, 4vw, 2.2rem);
-            color: var(--ca-blue);
-            letter-spacing: 2px;
+            color: var(--theme-primary);
+            letter-spacing: 4px;
             text-align: center;
+            font-weight: bold;
         }
 
         /* ================= 視圖 1：送上祝福表單 (#submit) ================= */
@@ -54,7 +57,12 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+            /* 傳統宣紙與細緻紋理背景 */
+            background-color: var(--theme-bg);
+            background-image: 
+                linear-gradient(rgba(139, 0, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 0, 0, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
             color: var(--text-main);
             overflow-y: auto;
             align-items: center;
@@ -63,43 +71,47 @@
 
         .form-card {
             background: white;
-            border-top: 8px solid var(--ca-blue);
-            border-radius: 15px;
+            /* 中式牌匾風格雙線邊框 */
+            border: 4px double var(--theme-primary);
+            border-radius: var(--border-radius);
             padding: 30px;
             width: 100%;
             max-width: 450px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            box-shadow: 6px 6px 0px rgba(139, 0, 0, 0.08);
         }
 
         .form-card h2 {
-            text-align: center; color: var(--ca-blue); margin-top: 0;
-            border-bottom: 2px dashed #eee; padding-bottom: 15px; margin-bottom: 25px;
+            text-align: center; color: var(--theme-primary); margin-top: 0;
+            border-bottom: 2px solid var(--theme-gold); padding-bottom: 15px; margin-bottom: 25px;
+            letter-spacing: 3px;
         }
 
         .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: var(--theme-dark); letter-spacing: 1px;}
         .form-group input, .form-group textarea {
-            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px;
+            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: var(--border-radius);
             font-size: 16px; box-sizing: border-box; background: #fafafa; transition: 0.3s;
+            font-family: inherit;
         }
         .form-group input:focus, .form-group textarea:focus {
-            outline: none; border-color: var(--ca-blue);
-            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.2); background: white;
+            outline: none; border-color: var(--theme-primary);
+            box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.15); background: white;
         }
 
         .submit-btn {
-            width: 100%; background: var(--ca-blue); color: white; border: none;
-            padding: 15px; border-radius: 8px; font-size: 1.2rem; font-weight: bold;
-            cursor: pointer; transition: 0.2s;
+            width: 100%; background: var(--theme-primary); color: var(--theme-bg); 
+            border: 2px solid var(--theme-primary);
+            padding: 15px; border-radius: var(--border-radius); font-size: 1.2rem; font-weight: bold;
+            cursor: pointer; transition: 0.2s; letter-spacing: 3px;
         }
-        .submit-btn:hover { background: var(--ca-blue-dark); transform: translateY(-2px); }
-        .submit-btn:disabled { background: #999; cursor: not-allowed; transform: none; }
+        .submit-btn:hover { background: white; color: var(--theme-primary); }
+        .submit-btn:disabled { background: #999; border-color: #999; color: white; cursor: not-allowed; }
         .back-to-wall { display: block; text-align: center; margin-top: 20px; color: #666; text-decoration: none; font-size: 0.9rem; }
 
         /* ================= 視圖 2：畢業祝福牆 (#wall) ================= */
         #view-wall {
             display: flex; flex-direction: column; height: 100vh;
-            background: var(--bg-light);
+            background: var(--theme-bg);
             position: relative;
         }
 
@@ -110,16 +122,16 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            transition: background-image 1s ease-in-out; /* 平滑淡入淡出 */
+            transition: background-image 1s ease-in-out;
             pointer-events: none;
         }
         
-        /* 淺色系毛玻璃遮罩 (確保文字清晰) */
+        /* 宣紙透光遮罩 */
         .bg-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.25); /* 降低白底濃度，讓背景顯現 */
-            backdrop-filter: blur(3px); /* 降低模糊度 */
-            -webkit-backdrop-filter: blur(3px);
+            background: rgba(253, 248, 245, 0.75); /* 宣紙色半透明 */
+            backdrop-filter: blur(4px); 
+            -webkit-backdrop-filter: blur(4px);
             z-index: 1;
             pointer-events: none;
         }
@@ -127,7 +139,7 @@
         .wall-header { 
             text-align: center; padding: 20px 0; z-index: 10; 
             background: rgba(255, 255, 255, 0.85);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-bottom: 3px double var(--theme-primary);
         }
 
         .wall-layout {
@@ -139,14 +151,15 @@
         .qr-section {
             flex: 0.8; max-width: 400px; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border: 1px solid rgba(255,255,255,1); border-radius: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 3px double var(--theme-primary); 
+            border-radius: var(--border-radius);
             padding: 30px; text-align: center;
+            box-shadow: 8px 8px 0px rgba(139, 0, 0, 0.08);
         }
-        .qr-section h3 { color: var(--ca-blue); font-size: clamp(1.5rem, 4vw, 2rem); margin-top: 0; margin-bottom: 15px; }
-        .qr-section p { font-size: clamp(1rem, 3vw, 1.3rem); color: #555; margin-bottom: 30px; line-height: 1.5; font-weight: bold;}
-        .qr-box { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 0 20px rgba(30, 58, 138, 0.15); margin-bottom: 20px; }
+        .qr-section h3 { color: var(--theme-primary); font-size: clamp(1.5rem, 4vw, 2rem); margin-top: 0; margin-bottom: 15px; letter-spacing: 2px;}
+        .qr-section p { font-size: clamp(1rem, 3vw, 1.2rem); color: var(--theme-dark); margin-bottom: 30px; line-height: 1.8; font-weight: bold;}
+        .qr-box { background: white; padding: 15px; border: 1px solid #ddd; margin-bottom: 20px; }
         .qr-box img { width: clamp(120px, 30vw, 220px); height: clamp(120px, 30vw, 220px); display: block; }
 
         /* 右側：輪轉祝福區 (Carousel) */
@@ -161,13 +174,14 @@
 
         .carousel-card {
             position: absolute; top: 50%; left: 0; width: 100%;
-            transform: translateY(-150%) scale(0.85); /* 預設：在上方且略小 */
+            transform: translateY(-150%) scale(0.85); 
             opacity: 0;
             background: rgba(255, 255, 255, 0.95); color: var(--text-main);
-            border-left: 10px solid var(--ca-yellow);
-            padding: 40px; border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-            transition: opacity 1s ease, transform 1s ease;
+            border: 3px double var(--theme-primary);
+            border-left: 12px solid var(--theme-primary);
+            padding: 40px; border-radius: var(--border-radius);
+            box-shadow: 10px 10px 0px rgba(139, 0, 0, 0.1);
+            transition: opacity 1s ease, transform 1s cubic-bezier(0.25, 1, 0.5, 1);
             box-sizing: border-box;
             pointer-events: none;
             z-index: 1;
@@ -179,56 +193,71 @@
         }
 
         .carousel-card.exit {
-            opacity: 0; transform: translateY(50%) scale(0.85); /* 退場：往下方滑落 */
+            opacity: 0; transform: translateY(50%) scale(0.85); 
             z-index: 1;
         }
         
-        .carousel-card .target { color: var(--ca-blue); font-size: clamp(1.2rem, 3vw, 1.6rem); font-weight: bold; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
-        .carousel-card .msg { font-size: clamp(1.5rem, 5vw, 2.5rem); line-height: 1.5; font-weight: bold; word-wrap: break-word; color: #222;}
-        .carousel-card .sender { margin-top: 25px; text-align: right; font-size: clamp(1.2rem, 4vw, 1.8rem); color: #d97706; font-weight: bold; }
+        .carousel-card .target { color: var(--theme-primary); font-size: clamp(1.2rem, 3vw, 1.6rem); font-weight: bold; margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px; letter-spacing: 1px;}
+        .carousel-card .msg { font-size: clamp(1.5rem, 5vw, 2.5rem); line-height: 1.6; font-weight: bold; word-wrap: break-word; color: var(--theme-dark);}
+        
+        /* 寄件人：中式白文印章風格 */
+        .carousel-card .sender { 
+            margin-top: 30px; text-align: right; font-size: clamp(1.1rem, 3.5vw, 1.5rem); 
+            font-weight: bold; 
+        }
+        .carousel-card .sender-stamp {
+            display: inline-block;
+            background-color: var(--theme-accent);
+            color: white; /* 白文印效果 */
+            border: 2px solid var(--theme-accent);
+            padding: 6px 16px;
+            border-radius: 4px;
+            letter-spacing: 2px;
+            box-shadow: 2px 2px 0px rgba(139, 0, 0, 0.2);
+        }
 
         /* ================= 提示框與管理員 Modal ================= */
         #toast {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            background: var(--ca-blue); color: white;
-            padding: 15px 30px; border-radius: 30px; z-index: 2000;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            background: var(--theme-primary); color: white;
+            padding: 15px 30px; border-radius: var(--border-radius); z-index: 2000;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
             opacity: 0; visibility: hidden; transition: 0.3s;
-            font-weight: bold; font-size: 1.2rem;
+            font-weight: bold; font-size: 1.1rem; border: 1px solid var(--theme-gold);
         }
         #toast.show { opacity: 1; visibility: visible; top: 40px;}
 
         .admin-btn {
             position: fixed; bottom: 20px; right: 20px;
-            background: rgba(30, 58, 138, 0.1); color: var(--ca-blue);
-            border: 1px solid rgba(30, 58, 138, 0.3); border-radius: 50%; width: 50px; height: 50px;
-            font-size: 24px; cursor: pointer; z-index: 100; transition: 0.3s;
-            backdrop-filter: blur(5px);
+            background: white; color: var(--theme-primary);
+            border: 2px solid var(--theme-primary); border-radius: 50%; width: 50px; height: 50px;
+            font-size: 20px; cursor: pointer; z-index: 100; transition: 0.3s;
         }
-        .admin-btn:hover { color: white; background: var(--ca-blue); transform: rotate(90deg); }
+        .admin-btn:hover { color: white; background: var(--theme-primary); transform: rotate(90deg); }
 
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            background: rgba(43, 43, 43, 0.8); backdrop-filter: blur(3px);
             z-index: 1000; justify-content: center; align-items: center;
         }
         .modal-content {
-            background: white; color: #333; padding: 30px; border-radius: 15px;
+            background: var(--theme-bg); color: var(--text-main); padding: 30px; border-radius: var(--border-radius);
+            border: 3px double var(--theme-primary);
             width: 90%; max-width: 700px; max-height: 85vh; overflow-y: auto; position: relative;
         }
         .close-modal { position: absolute; top: 20px; right: 25px; font-size: 30px; cursor: pointer; color: #888; }
         .close-modal:hover { color: #000; }
         
-        .admin-section { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
-        .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .admin-table th, .admin-table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        .admin-table th { background: #f5f5f5; color: var(--ca-blue); }
-        .btn-del { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
-        .btn-del:hover { background: #dc2626; }
+        .admin-section { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #ccc; }
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white;}
+        .admin-table th, .admin-table td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        .admin-table th { background: var(--theme-primary); color: white; }
+        .btn-del { background: var(--theme-accent); color: white; border: none; padding: 6px 12px; border-radius: 2px; cursor: pointer; }
+        .btn-del:hover { opacity: 0.8; }
         
         .flex-row { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
-        .admin-input { padding: 10px; border: 1px solid #ccc; border-radius: 6px; flex: 1; font-size: 16px; }
-        .btn-action { padding: 10px 20px; background: var(--ca-blue); color: white; border: none; border-radius: 6px; cursor: pointer; }
+        .admin-input { padding: 10px; border: 1px solid #ccc; border-radius: 2px; flex: 1; font-size: 16px; font-family: inherit;}
+        .btn-action { padding: 10px 20px; background: var(--theme-primary); color: white; border: none; border-radius: 2px; cursor: pointer; font-family: inherit; font-weight: bold;}
         
         /* 響應式排版 Media Queries */
         @media (max-width: 900px) {
@@ -286,21 +315,21 @@
         </div>
 
         <div class="form-card">
-            <h2>✨ 寫下您的祝福 ✨</h2>
+            <h2>🏮 寫下您的祝福 🏮</h2>
             <form id="wishForm">
                 <div class="form-group">
                     <label>您的姓名 / 稱謂</label>
-                    <input type="text" id="guestName" required placeholder="例如：李大仁 / 家長">
+                    <input type="text" id="guestName" required placeholder="例如：王小明 / 家長會長">
                 </div>
                 <div class="form-group">
                     <label>送給哪位畢業生 (或班級)</label>
-                    <input type="text" id="targetName" required placeholder="例如：605 / 李小安">
+                    <input type="text" id="targetName" required placeholder="例如：六年甲班 / 李大華">
                 </div>
                 <div class="form-group">
                     <label>祝福內容</label>
                     <textarea id="message" rows="5" required placeholder="寫下期許與祝福..."></textarea>
                 </div>
-                <button type="submit" class="submit-btn" id="submitBtn">送出祝福 🚀</button>
+                <button type="submit" class="submit-btn" id="submitBtn">送出祝福 🏮</button>
             </form>
         </div>
         <a href="#wall" class="back-to-wall">切換至大螢幕展示牆 (管理員用)</a>
@@ -353,7 +382,7 @@
         <div class="wall-layout">
             <!-- QR Code 區 -->
             <div class="qr-section">
-                <h3>掃描送祝福 ✨</h3>
+                <h3>掃描送祝福 🏮</h3>
                 <p>拿起手機掃描下方 QR Code<br>您的祝福將即時顯示在螢幕上！</p>
                 <div class="qr-box">
                     <img id="qrImage" src="" alt="掃描送祝福">
@@ -382,7 +411,7 @@
             
             <!-- 登入區塊 -->
             <div id="loginSection">
-                <p>請輸入管理員密碼以進入設定</p>
+                <p>請輸入管理員密碼以進入設定 (預設: 1234)</p>
                 <div class="flex-row">
                     <input type="password" id="adminPassword" class="admin-input" placeholder="請輸入密碼">
                     <button class="btn-action" onclick="verifyLogin()">登入</button>
@@ -401,7 +430,9 @@
 
                 <div class="admin-section">
                     <h3>🖼️ 輪播背景設定 (淺色系)</h3>
-                    <p style="font-size: 0.9rem; color: #666; margin-top: 0;">請輸入圖片網址 (現在已支援 <strong>Google Drive 分享連結</strong>！)。<br><span style="color:#10b981;">只要貼上 Google 雲端硬碟的分享網址，系統會自動轉換為背景圖片。</span></p>
+                    <p style="font-size: 0.9rem; color: #666; margin-top: 0;">請輸入圖片網址或檔案名稱。<br>
+                    <span style="color:#ef4444; font-weight:bold;">⚠️ 警告：Google Drive 近期封鎖了外部網站讀取圖片，高機率會一片空白！</span><br>
+                    <span style="color:#10b981;">💡 最佳作法：請將圖片上傳到這個 GitHub 資料夾 (例如命名為 <code>bg1.jpg</code>)，然後在此處直接輸入 <code>bg1.jpg</code> 即可。</span></p>
                     <div id="bgInputsContainer">
                         <!-- JS 將動態產生 7 個輸入框 -->
                     </div>
@@ -465,15 +496,13 @@
         // ================= 1. 系統與 Firebase 初始化 =================
         // ⚠️ 部署到 GitHub Pages 的關鍵：您必須在這裡填入自己的 Firebase 設定！
         const myFirebaseConfig = {
-            // 👇 請確保您貼上的設定「沒有」被 // 雙斜線給註解掉
-            // 例如： apiKey: "AIzaSyD-xxxxxxxxxxxx",
-            // 而不是 // apiKey: "AIzaSyD-xxxxxxxxxxxx",
-              apiKey: "AIzaSyCnHAgkXvben7eh2OMGtq13biiZa24EC7s",
+            apiKey: "AIzaSyCnHAgkXvben7eh2OMGtq13biiZa24EC7s",
   authDomain: "gradeuate-deadc.firebaseapp.com",
   projectId: "gradeuate-deadc",
   storageBucket: "gradeuate-deadc.firebasestorage.app",
   messagingSenderId: "30747945421",
   appId: "1:30747945421:web:955c16cec04af65e473c84"
+
 
         };
         
@@ -483,9 +512,13 @@
 
         let app, auth, db, currentUser = null, isAdminLoggedIn = false;
         
-        let customBgUrls = ["https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2000&auto=format&fit=crop"];
+        // 替換為充滿中式古典氣息的唯美紅燈籠/傳統建築圖作為預設背景
+        let customBgUrls = ["https://images.unsplash.com/photo-1543096222-72de739f7917?q=80&w=2000&auto=format&fit=crop"];
         let currentBgIndex = 0;
         let bgRotationInterval = null;
+
+        // 🟢 新增：網頁一載入就先強制渲染一次預設背景
+        updateWallBackground();
 
         // 改良版的 Firebase 啟動邏輯 (增強容錯與除錯)
         let finalConfig = myFirebaseConfig;
@@ -576,19 +609,23 @@
         function updateWallBackground() {
             const carouselEl = document.getElementById('bg-carousel');
             if (bgRotationInterval) clearInterval(bgRotationInterval);
+            
             if(customBgUrls.length === 0) {
                 carouselEl.style.backgroundImage = 'none';
                 return;
             }
             if(currentBgIndex >= customBgUrls.length) currentBgIndex = 0;
+            
             const displayUrl = convertGoogleDriveUrl(customBgUrls[currentBgIndex]);
             carouselEl.style.backgroundImage = `url("${displayUrl}")`;
+            console.log("🖼️ 嘗試載入背景圖片:", displayUrl); // 幫助除錯
 
             if(customBgUrls.length > 1) {
                 bgRotationInterval = setInterval(() => {
                     currentBgIndex = (currentBgIndex + 1) % customBgUrls.length;
                     const nextUrl = convertGoogleDriveUrl(customBgUrls[currentBgIndex]);
                     carouselEl.style.backgroundImage = `url("${nextUrl}")`;
+                    console.log("🖼️ 切換背景圖片:", nextUrl); // 幫助除錯
                 }, 60000); 
             }
         }
@@ -644,7 +681,7 @@
                     <div class="carousel-card" id="card-${idx}">
                         <div class="target">To: ${escapeHtml(msg.targetName)}</div>
                         <div class="msg">${escapeHtml(msg.message).replace(/\n/g, '<br>')}</div>
-                        <div class="sender">—— ${escapeHtml(msg.guestName)}</div>
+                        <div class="sender"><span class="sender-stamp">${escapeHtml(msg.guestName)}</span></div>
                     </div>`;
             });
             container.innerHTML = html;
