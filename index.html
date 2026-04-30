@@ -347,21 +347,21 @@
         </div>
 
         <div class="form-card">
-            <h2>🏮 寫下您的祝福 🏮</h2>
+            <h2>🎓 寫下您的祝福 🎓</h2>
             <form id="wishForm">
                 <div class="form-group">
                     <label>您的姓名 / 稱謂</label>
-                    <input type="text" id="guestName" required placeholder="例如：王小明 / 家長會長">
+                    <input type="text" id="guestName" required placeholder="例如：李大仁 / 家長">
                 </div>
                 <div class="form-group">
                     <label>送給哪位畢業生 (或班級)</label>
-                    <input type="text" id="targetName" required placeholder="例如：六年甲班 / 李大華">
+                    <input type="text" id="targetName" required placeholder="例如：605 / 李小安">
                 </div>
                 <div class="form-group">
                     <label>祝福內容</label>
                     <textarea id="message" rows="5" required placeholder="寫下期許與祝福..."></textarea>
                 </div>
-                <button type="submit" class="submit-btn" id="submitBtn">送出祝福 🏮</button>
+                <button type="submit" class="submit-btn" id="submitBtn">送出祝福 🎓</button>
             </form>
         </div>
         <a href="#wall" class="back-to-wall">切換至大螢幕展示牆 (管理員用)</a>
@@ -414,7 +414,7 @@
         <div class="wall-layout">
             <!-- QR Code 區 -->
             <div class="qr-section">
-                <h3>掃描送祝福 🏮</h3>
+                <h3>掃描送祝福 🎓</h3>
                 <p>拿起手機掃描下方 QR Code<br>您的祝福將即時顯示在螢幕上！</p>
                 <div class="qr-box">
                     <img id="qrImage" src="" alt="掃描送祝福">
@@ -443,7 +443,7 @@
             
             <!-- 登入區塊 -->
             <div id="loginSection">
-                <p>請輸入管理員密碼以進入設定 (預設: 1234)</p>
+                <p>請輸入管理員密碼以進入設定</p>
                 <div class="flex-row">
                     <input type="password" id="adminPassword" class="admin-input" placeholder="請輸入密碼">
                     <button class="btn-action" onclick="verifyLogin()">登入</button>
@@ -544,8 +544,8 @@
 
         let app, auth, db, currentUser = null, isAdminLoggedIn = false;
         
-        // 替換為充滿中式古典氣息的唯美紅燈籠/傳統建築圖作為預設背景
-        let customBgUrls = ["https://images.unsplash.com/photo-1543096222-72de739f7917?q=80&w=2000&auto=format&fit=crop"];
+        // 替換為充滿畢業氣息的拋學士帽唯美背景圖
+        let customBgUrls = ["https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2000&auto=format&fit=crop"];
         let currentBgIndex = 0;
         let bgRotationInterval = null;
 
