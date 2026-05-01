@@ -443,7 +443,7 @@
             
             <!-- 登入區塊 -->
             <div id="loginSection">
-                <p>請輸入管理員密碼以進入設定</p>
+                <p>請輸入管理員密碼以進入設定 </p>
                 <div class="flex-row">
                     <input type="password" id="adminPassword" class="admin-input" placeholder="請輸入密碼">
                     <button class="btn-action" onclick="verifyLogin()">登入</button>
@@ -453,6 +453,16 @@
             <!-- 管理區塊 (登入後顯示) -->
             <div id="adminPanel" style="display: none;">
                 <div class="admin-section">
+                    <h3>🗑️ 留言管理</h3>
+                    <div style="max-height: 300px; overflow-y: auto;">
+                        <table class="admin-table">
+                            <thead><tr><th>送件人</th><th>對象</th><th>內容</th><th>操作</th></tr></thead>
+                            <tbody id="adminTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="admin-section">
                     <h3>🔐 修改密碼</h3>
                     <div class="flex-row">
                         <input type="password" id="newPassword" class="admin-input" placeholder="輸入新密碼">
@@ -460,7 +470,7 @@
                     </div>
                 </div>
 
-                <div class="admin-section">
+                <div class="admin-section" style="border-bottom: none;">
                     <h3>🖼️ 輪播背景設定 (淺色系)</h3>
                     <p style="font-size: 0.9rem; color: #666; margin-top: 0;">請輸入圖片網址或檔案名稱。<br>
                     <span style="color:#ef4444; font-weight:bold;">⚠️ 警告：Google Drive 近期封鎖了外部網站讀取圖片，高機率會一片空白！</span><br>
@@ -469,16 +479,6 @@
                         <!-- JS 將動態產生 7 個輸入框 -->
                     </div>
                     <button class="btn-action" style="background:#8b5cf6; margin-top: 15px;" onclick="saveBackgrounds()">💾 儲存背景設定</button>
-                </div>
-                
-                <div class="admin-section" style="border-bottom: none;">
-                    <h3>🗑️ 留言管理</h3>
-                    <div style="max-height: 300px; overflow-y: auto;">
-                        <table class="admin-table">
-                            <thead><tr><th>送件人</th><th>對象</th><th>內容</th><th>操作</th></tr></thead>
-                            <tbody id="adminTableBody"></tbody>
-                        </table>
-                    </div>
                 </div>
             </div>
         </div>
@@ -529,7 +529,7 @@
         // ================= 1. 系統與 Firebase 初始化 =================
         // ⚠️ 部署到 GitHub Pages 的關鍵：您必須在這裡填入自己的 Firebase 設定！
         const myFirebaseConfig = {
-           apiKey: "AIzaSyCnHAgkXvben7eh2OMGtq13biiZa24EC7s",
+                apiKey: "AIzaSyCnHAgkXvben7eh2OMGtq13biiZa24EC7s",
   authDomain: "gradeuate-deadc.firebaseapp.com",
   projectId: "gradeuate-deadc",
   storageBucket: "gradeuate-deadc.firebasestorage.app",
